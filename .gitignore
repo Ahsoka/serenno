@@ -1,2 +1,5 @@
 # VSCode Confif Files
 .vscode
+
+# Python Bytecode
+__pycache__
