@@ -68,16 +68,16 @@ class Listener(Presence):
         self.connect()
         self.update()
 
-    def is_assembly(self) -> bool:
-        product = self.app.activeProduct
-        if product.productType == ProductType.DESIGN:
-            product: Design
-            return len(product.allComponents) > 1
-        raise WrongWorkspace(f'Current workspace is {product.productType!r}')
+    def is_assembly(self, document: Document) -> bool:
+        design = document.products.itemByProductType(ProductType.DESIGN)
+        if design:
+            design: Design
+            return len(design.allComponents) > 1
+        raise WrongWorkspace(f'Current workspace is {design.productType!r}')
 
     def document_change(self, document: Document, update: bool = True):
         try:
-            self.docs[document.creationId] = self.is_assembly()
+            self.docs[document.creationId] = self.is_assembly(document)
         except WrongWorkspace:
             pass
 
