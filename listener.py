@@ -1,7 +1,7 @@
 from .utils import ProductType, WrongWorkspace
+from adsk.core import Application, Document
 from .pypresence.pypresence import Presence
 from .fusion360utils import add_handler
-from adsk.core import Application
 from adsk.fusion import Design
 
 import time
@@ -29,6 +29,8 @@ class Listener(Presence):
             'end': None
         }
 
+        self.docs = {}
+
     def update(self):
         super().update(**self.current_state)
 
@@ -52,13 +54,13 @@ class Listener(Presence):
         self.connect()
         self.app = app
         self.current_state['start'] = int(time.time())
-        self.document_change(self.app.activeDocument.name, update=False)
+        self.document_change(self.app.activeDocument, update=False)
         self.workspace_change(self.app.userInterface.activeWorkspace.name, update=False)
         self.update()
 
         add_handler(
             app.documentActivating,
-            lambda doc_event: self.document_change(doc_event.document.name)
+            lambda doc_event: self.document_change(doc_event.document)
         )
         add_handler(
             app.userInterface.workspacePreActivate,
@@ -72,11 +74,24 @@ class Listener(Presence):
             return len(product.allComponents) > 1
         raise WrongWorkspace(f'Current workspace is {product.productType!r}')
 
-    def document_change(self, document_name: str, update: bool = True):
+    def document_change(self, document: Document, update: bool = True):
+        try:
+            self.docs[document.creationId] = self.is_assembly()
+        except WrongWorkspace:
+            pass
+
+        document_name = document.name
         if document_name is None:
             self.current_state['details'] = "Idling"
         else:
             self.current_state['details'] = f"Editing {document_name}"
+
+        if self.docs.get(document.creationId, False):
+            self.current_state['large_text'] = (
+                'Editing an Assembly' if self.docs[document.creationId] else 'Editing a Component'
+            )
+        else:
+            self.current_state['large_text'] = None
 
         if update and self.connected:
             self.update()
