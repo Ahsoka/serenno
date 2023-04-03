@@ -87,7 +87,7 @@ class Listener(Presence):
         else:
             self.current_state['details'] = f"Editing {document_name}"
 
-        if self.docs.get(document.creationId, False):
+        if document.creationId in self.docs:
             self.current_state['large_text'] = (
                 'Editing an Assembly' if self.docs[document.creationId] else 'Editing a Component'
             )
