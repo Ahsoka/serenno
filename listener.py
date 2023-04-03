@@ -1,4 +1,8 @@
 from .pypresence.pypresence import Presence
+from .fusion360utils import add_handler
+from adsk.core import Application
+
+import time
 
 
 class Listener(Presence):
@@ -41,6 +45,23 @@ class Listener(Presence):
         # that the PID is dead.
         self.clear()
         self.close()
+
+    def init(self, app: Application):
+        self.connect()
+        self.app = app
+        self.current_state['start'] = int(time.time())
+        self.document_change(self.app.activeDocument.name, update=False)
+        self.workspace_change(self.app.userInterface.activeWorkspace.name, update=False)
+        self.update()
+
+        add_handler(
+            app.documentActivating,
+            lambda doc_event: self.document_change(doc_event.document.name)
+        )
+        add_handler(
+            app.userInterface.workspacePreActivate,
+            lambda workspace_event: self.workspace_change(workspace_event.workspace.name)
+        )
 
     def document_change(self, document_name: str, update: bool = True):
         if document_name is None:
