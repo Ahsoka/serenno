@@ -7,3 +7,7 @@ class ProductType(str, Enum):
     SIMULATION = "SimStudiesProductType"
     MANUFACTURE = "CAMProductType"
     DRAWING = "FusionDrawingProductType"
+
+
+class WrongWorkspace(Exception):
+    pass
