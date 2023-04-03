@@ -14,7 +14,7 @@ class WorkspaceEnum(str, Enum):
     # NOTE: Have not tested GENERATIVE_DESIGN since I don't have access to it
     # id is sourced from this screenshot:
     # https://help.autodesk.com/cloudhelp/ENU/Fusion-360-API/images/UIExport1.png
-    GENERATIVE_DESIGN = "GenartiveEnvironment"
+    GENERATIVE_DESIGN = "GenerativeEnvironment"
     RENDER = "FusionRenderEnvironment"
     ANIMATION = "Publisher3DEnvironment"
     SIMULATION = "SimulationEnvironment"
