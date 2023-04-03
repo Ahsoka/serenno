@@ -51,10 +51,9 @@ class Listener(Presence):
         self.close()
 
     def init(self, app: Application):
-        self.app = app
         self.current_state['start'] = int(time.time())
-        self.document_change(self.app.activeDocument, update=False)
-        self.workspace_change(self.app.userInterface.activeWorkspace, update=False)
+        self.document_change(app.activeDocument, update=False)
+        self.workspace_change(app.userInterface.activeWorkspace, update=False)
 
         add_handler(
             app.documentActivating,
