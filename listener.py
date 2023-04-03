@@ -50,3 +50,9 @@ class Listener(Presence):
 
         if update and self.connected:
             self.update()
+
+    def workspace_change(self, workspace_name: str, update: bool = True):
+        self.current_state['state'] = f"Workspace: {workspace_name}"
+        # TODO: Add image update logic.
+        if update and self.connected:
+            self.update()
