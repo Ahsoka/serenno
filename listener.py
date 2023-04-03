@@ -51,12 +51,10 @@ class Listener(Presence):
         self.close()
 
     def init(self, app: Application):
-        self.connect()
         self.app = app
         self.current_state['start'] = int(time.time())
         self.document_change(self.app.activeDocument, update=False)
         self.workspace_change(self.app.userInterface.activeWorkspace.name, update=False)
-        self.update()
 
         add_handler(
             app.documentActivating,
@@ -66,6 +64,9 @@ class Listener(Presence):
             app.userInterface.workspacePreActivate,
             lambda workspace_event: self.workspace_change(workspace_event.workspace.name)
         )
+
+        self.connect()
+        self.update()
 
     def is_assembly(self) -> bool:
         product = self.app.activeProduct
