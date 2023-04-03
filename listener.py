@@ -1,6 +1,8 @@
+from .utils import ProductType, WrongWorkspace
 from .pypresence.pypresence import Presence
 from .fusion360utils import add_handler
 from adsk.core import Application
+from adsk.fusion import Design
 
 import time
 
@@ -62,6 +64,13 @@ class Listener(Presence):
             app.userInterface.workspacePreActivate,
             lambda workspace_event: self.workspace_change(workspace_event.workspace.name)
         )
+
+    def is_assembly(self) -> bool:
+        product = self.app.activeProduct
+        if product.productType == ProductType.DESIGN:
+            product: Design
+            return len(product.allComponents) > 1
+        raise WrongWorkspace(f'Current workspace is {product.productType!r}')
 
     def document_change(self, document_name: str, update: bool = True):
         if document_name is None:
