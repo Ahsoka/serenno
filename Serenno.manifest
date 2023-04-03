@@ -1,0 +1,13 @@
+{
+	"autodeskProduct":	"Fusion360",
+	"type":	"addin",
+	"id":	"e372006d-8c0f-458a-ac40-80e51ea66075",
+	"author":	"Ahsoka",
+	"description":	{
+		"":	"Update your discord status with a rich presence when using Autodesk Fusion 360. Named after Darth Tyranus/Count Dooku's home world, Serenno."
+	},
+	"version":	"",
+	"runOnStartup":	false,
+	"supportedOS":	"windows|mac",
+	"editEnabled":	true
+}
