@@ -12,7 +12,7 @@ try:
 except:
     DEBUG = False
 
-def log(message: str, level: adsk.core.LogLevels = adsk.core.LogLevels.InfoLogLevel, force_console: bool = False):
+def log(message: str, level: adsk.core.LogLevels = adsk.core.LogLevels.InfoLogLevel, force_console: bool = True):
     """Utility function to easily handle logging in your app.
 
     Arguments:
