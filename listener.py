@@ -41,3 +41,12 @@ class Listener(Presence):
         # that the PID is dead.
         self.clear()
         self.close()
+
+    def document_change(self, document_name: str, update: bool = True):
+        if document_name is None:
+            self.current_state['details'] = "Idling"
+        else:
+            self.current_state['details'] = f"Editing {document_name}"
+
+        if update and self.connected:
+            self.update()
