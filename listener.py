@@ -72,7 +72,10 @@ class Listener(Presence):
         if design:
             design: Design
             return len(design.allComponents) > 1
-        raise WrongWorkspace(f'Current workspace is {design.productType!r}')
+        if isinstance(design, Design):
+            raise WrongWorkspace(f'Current workspace is {design.productType!r}')
+        else:
+            raise WrongWorkspace('Could determine the current workspace.')
 
     def document_change(self, document: Document, update: bool = True):
         try:
